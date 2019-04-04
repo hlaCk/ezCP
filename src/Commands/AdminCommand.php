@@ -4,6 +4,7 @@ namespace hlaCk\ezCP\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use hlaCk\ezCP\Facades\ezCP;
 
@@ -29,10 +30,13 @@ class AdminCommand extends Command
     protected function getOptions()
     {
         return [
-            ['create', null, InputOption::VALUE_NONE, 'Create an admin user', null],
+            ['no-confirm', 'y', InputOption::VALUE_NONE, 'No password confirm', null],
+            ['create', 'c', InputOption::VALUE_NONE, 'Create an admin user', null],
+            ['name', null, InputOption::VALUE_OPTIONAL, 'Admin name', null],
+            ['password', 'p', InputOption::VALUE_OPTIONAL, 'Admin password', null],
+            ['username', 'u', InputOption::VALUE_OPTIONAL, 'Admin username', null],
         ];
     }
-
     public function fire()
     {
         return $this->handle();
@@ -47,7 +51,8 @@ class AdminCommand extends Command
     {
         // Get or create user
         $user = $this->getUser(
-            $this->option('create')
+            $this->option('create'),
+            $this->option('no-confirm')
         );
 
         // the user not returned
@@ -81,7 +86,7 @@ class AdminCommand extends Command
     protected function getArguments()
     {
         return [
-            ['email', InputOption::VALUE_REQUIRED, 'The email of the user.', null],
+            ['email', InputArgument::OPTIONAL, 'The email of the user.', null],
         ];
     }
 
@@ -112,22 +117,36 @@ class AdminCommand extends Command
      *
      * @return \App\User
      */
-    protected function getUser($create = false)
+    protected function getUser($create = false, $confirm = true)
     {
         $email = $this->argument('email');
+        $name = $this->option('name');
+        $username = $this->option('username') ?: false ;
+        $password = $this->option('password');
 
         $model = config('ezcp.user.namespace') ?: config('auth.providers.users.model');
 
         // If we need to create a new user go ahead and create it
         if ($create) {
-            $name = $this->ask('Enter the admin name');
-            $password = $this->secret('Enter admin password');
-            $confirmPassword = $this->secret('Confirm Password');
 
             // Ask for email if there wasnt set one
             if (!$email) {
                 $email = $this->ask('Enter the admin email');
             }
+            // Ask for email if there wasnt set one
+            if (!$name) {
+                $name = $this->ask('Enter the admin name');
+            }
+            // Ask for email if there wasnt set one
+            if ($username) {
+                $username = is_bool($username) ? $this->ask('Enter the admin username') : $username;
+            }
+            // Ask for email if there wasnt set one
+            if (!$password) {
+                $password = $this->secret('Enter admin password');
+            }
+
+            $confirmPassword = !$confirm ? $password : $this->secret('Confirm Password');
 
             // Passwords don't match
             if ($password != $confirmPassword) {
@@ -137,6 +156,17 @@ class AdminCommand extends Command
             }
 
             $this->info('Creating admin account');
+
+            $admin_data = [];
+
+            if( $email )
+                $admin_data[ 'email' ] = $email;
+
+            if( $name )
+                $admin_data[ 'name' ] = $name;
+
+            if( $username )
+                $admin_data[ 'username' ] = $username;
 
             return $model::create([
                 'name'     => $name,
