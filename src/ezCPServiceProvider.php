@@ -256,7 +256,6 @@ class ezCPServiceProvider extends ServiceProvider
             ],
             'public' => [
                 "{$publishablePath}/assets" =>  public_path('vendor/ezcp/assets'),
-                # aezcp assets hiiii23rr
             ],
 
         ];
