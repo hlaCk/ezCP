@@ -1,5 +1,5 @@
 <?php
-
+// asd
 namespace hlaCk\ezCP;
 
 use Illuminate\Contracts\Events\Dispatcher;
@@ -255,7 +255,7 @@ class ezCPServiceProvider extends ServiceProvider
                 "{$publishablePath}/config/ezcp.php" => config_path('ezcp.php'),
             ],
             'public' => [
-                "{$publishablePath}/assets" =>  public_path('vendor/ezcp/assets'), // a
+                "{$publishablePath}/assets" =>  public_path('vendor/ezcp/assets'),
             ],
 
         ];
