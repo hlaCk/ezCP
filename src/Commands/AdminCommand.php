@@ -200,7 +200,8 @@ class AdminCommand extends Command
 
                 return;
             }
-            // Passwords don't match
+
+            // check if email exist
             if ( $model::where('email', $email)->get()->count() > 0 ) {
                 $this->error("{$email} already exist !");
 
