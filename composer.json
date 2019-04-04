@@ -62,7 +62,11 @@
                 "hlaCk\\ezCP\\Providers\\ezCPDummyServiceProvider",
                 "hlaCk\\ezCP\\ezCPHooksServiceProvider",
                 "hlaCk\\ezCP\\HooksServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "ezCP": "hlaCk\\ezCP\\Facades\\ezCP",
+                "Html": "Collective\\Html\\HtmlFacade"
+            }
         }
     }
 }

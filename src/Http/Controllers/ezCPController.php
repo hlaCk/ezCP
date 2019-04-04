@@ -81,7 +81,7 @@ class ezCPController extends Controller
     public function assets(Request $request)
     {
         $path = str_start(str_replace(['../', './'], '', urldecode($request->path)), '/');
-        $path = base_path('packages/hlack/ezcp/publishable/assets'.$path);
+        $path = base_path('vendor/hlack/ezcp/publishable/assets'.$path);
 
         if (File::exists($path)) {
             $mime = '';
