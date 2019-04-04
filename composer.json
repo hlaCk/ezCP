@@ -38,9 +38,7 @@
     },
     "autoload": {
         "psr-4": {
-            "hlaCk\\ezCP\\": "src/",
-            "hlaCk\\ezCP\\": "src/",
-            "hlaCk\\overA\\": "src/"
+            "hlaCk\\ezCP\\": "src/"
         },
         "files": [
             "src/Helpers/helpers.php",
@@ -53,8 +51,7 @@
     "autoload-dev": {
         "psr-4": {
             "hlaCk\\ezCP\\Tests\\": "tests/",
-            "hlaCk\\ezCP\\": "src/",
-            "hlaCk\\overA\\": "src/"
+            "hlaCk\\ezCP\\": "src/"
       }
     },
     "minimum-stability": "stable",

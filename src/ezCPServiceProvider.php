@@ -2,7 +2,6 @@
 
 namespace hlaCk\ezCP;
 
-use App\overA\OverA;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
