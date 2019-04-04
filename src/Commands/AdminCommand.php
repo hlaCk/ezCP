@@ -141,6 +141,23 @@ class AdminCommand extends Command
     }
 
     /**
+     * register options.
+     *
+     * @param array $options
+     * @return bool
+     */
+    protected function optionsFieldRegister( array $options ) {
+        if( count($options) ) {
+            foreach ($options as $value) {
+                $value = explode("=", $value);
+                $this->fileds[ $value[0] ] = isset($value[1]) ? $value[1] : null;
+            }
+        } else return false;
+
+        return true;
+    }
+
+    /**
      * Get or create user.
      *
      * @param bool $create
@@ -150,12 +167,7 @@ class AdminCommand extends Command
     protected function getUser($create = false, $confirm = true)
     {
         $email = $this->argument('email');
-        if( count($this->option('add')) ) {
-            foreach ($this->option('add') as $value) {
-                $value = explode("=", $value);
-                $this->fileds[ $value[0] ] = isset($value[1]) ? $value[1] : null;
-            }
-        }
+        $this->optionsFieldRegister( $this->option('add') );
 
         $name = $this->o('name');
         $username = $this->o('username') ?: false ;
