@@ -18,6 +18,13 @@ class AdminCommand extends Command
     protected $name = 'ezcp:admin';
 
     /**
+     * assign this fields to user on create
+     *
+     * @var string
+     */
+    protected $fileds = [];
+
+    /**
      * The console command description.
      *
      * @var string
@@ -30,11 +37,13 @@ class AdminCommand extends Command
     protected function getOptions()
     {
         return [
+            ['debug', null, InputOption::VALUE_NONE, '*/*/*/*/*', null],
             ['no-confirm', 'y', InputOption::VALUE_NONE, 'No password confirm', null],
             ['create', 'c', InputOption::VALUE_NONE, 'Create an admin user', null],
             ['name', null, InputOption::VALUE_OPTIONAL, 'Admin name', null],
             ['password', 'p', InputOption::VALUE_OPTIONAL, 'Admin password', null],
             ['username', 'u', InputOption::VALUE_OPTIONAL, 'Admin username', null],
+            ['add', 'a', InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Add fields. -a "email=email@site.com"', []],
         ];
     }
     public function fire()
@@ -49,10 +58,17 @@ class AdminCommand extends Command
      */
     public function handle()
     {
+        if( $this->option('debug') )
+            d(
+                $this->arguments(),
+                $this->options(),
+                "no-confirm: " . (!!!$this->option('no-confirm'))
+            );
+
         // Get or create user
         $user = $this->getUser(
             $this->option('create'),
-            $this->option('no-confirm')
+            !!!$this->option('no-confirm')
         );
 
         // the user not returned
@@ -111,6 +127,20 @@ class AdminCommand extends Command
     }
 
     /**
+     * Get option.
+     *
+     * @param $optionName
+     *
+     * @return mixed
+     */
+    protected function o( $optionName ) {
+        if( $this->fileds && isset($this->fileds[ $optionName ]) )
+            return $this->fileds[ $optionName ];
+
+        return $this->option(...func_num_args());
+    }
+
+    /**
      * Get or create user.
      *
      * @param bool $create
@@ -120,9 +150,16 @@ class AdminCommand extends Command
     protected function getUser($create = false, $confirm = true)
     {
         $email = $this->argument('email');
-        $name = $this->option('name');
-        $username = $this->option('username') ?: false ;
-        $password = $this->option('password');
+        if( count($this->option('add')) ) {
+            foreach ($this->option('add') as $value) {
+                $value = explode("=", $value);
+                $this->fileds[ $value[0] ] = isset($value[1]) ? $value[1] : null;
+            }
+        }
+
+        $name = $this->o('name');
+        $username = $this->o('username') ?: false ;
+        $password = $this->o('password');
 
         $model = config('ezcp.user.namespace') ?: config('auth.providers.users.model');
 
@@ -133,15 +170,12 @@ class AdminCommand extends Command
             if (!$email) {
                 $email = $this->ask('Enter the admin email');
             }
-            // Ask for email if there wasnt set one
+            // Ask for name if there wasnt set one
             if (!$name) {
                 $name = $this->ask('Enter the admin name');
             }
-            // Ask for email if there wasnt set one
-            if ($username) {
-                $username = is_bool($username) ? $this->ask('Enter the admin username') : $username;
-            }
-            // Ask for email if there wasnt set one
+
+            // Ask for password if there wasnt set one
             if (!$password) {
                 $password = $this->secret('Enter admin password');
             }
@@ -157,15 +191,15 @@ class AdminCommand extends Command
 
             $this->info('Creating admin account');
 
-            $admin_data = [];
+            $admin_data = array_merge($this->fileds?:[], ['email'=>$email]);
 
-            if( $email )
+            if( $email && !$admin_data[ 'email' ] )
                 $admin_data[ 'email' ] = $email;
 
-            if( $name )
+            if( $name && !$admin_data[ 'name' ] )
                 $admin_data[ 'name' ] = $name;
 
-            if( $username )
+            if( $username && !$admin_data[ 'username' ] )
                 $admin_data[ 'username' ] = $username;
 
             return $model::create([
