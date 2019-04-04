@@ -1,5 +1,5 @@
 <?php
-// by hlaCk
+// by hlaCk asd
 namespace hlaCk\ezCP;
 
 use Illuminate\Contracts\Events\Dispatcher;
