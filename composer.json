@@ -25,6 +25,7 @@
         "larapack/doctrine-support": "~0.1.4",
         "arrilot/laravel-widgets": "^3.7",
         "league/flysystem": "~1.0.41",
+        "composer/composer": "~1.4",
         "ext-json": "*"
     },
     "require-dev": {
