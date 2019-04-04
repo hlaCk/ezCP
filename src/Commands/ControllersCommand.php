@@ -61,7 +61,7 @@ class ControllersCommand extends Command
     public function handle()
     {
         $stub = $this->getStub();
-        $files = $this->filesystem->files(base_path('vendor/hlack/ezcp/src/Http/Controllers'));
+        $files = $this->filesystem->files(base_path('packages/hlack/ezcp/src/Http/Controllers'));
         $namespace = config('ezcp.controllers.namespace', 'hlaCk\\ezCP\\Http\\Controllers');
 
         $appNamespace = app()->getNamespace();
@@ -103,7 +103,7 @@ class ControllersCommand extends Command
      */
     public function getStub()
     {
-        return $this->filesystem->get(base_path('/vendor/hlack/ezcp/stubs/'.$this->stub));
+        return $this->filesystem->get(base_path('/packages/hlack/ezcp/stubs/'.$this->stub));
     }
 
     /**

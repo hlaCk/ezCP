@@ -14,12 +14,6 @@ class ezCPController extends Controller
 {
     public function index()
     {
-//        Lang::setLocale("en");
-//        d(
-//            Lang::getLocale(),
-//            __('ezcp::seeders.menu_items.tools')
-//            __('ezcp::generic.dashboard')
-//        );
         return ezCP::view('ezcp::index');
     }
 
@@ -81,7 +75,7 @@ class ezCPController extends Controller
     public function assets(Request $request)
     {
         $path = str_start(str_replace(['../', './'], '', urldecode($request->path)), '/');
-        $path = base_path('vendor/hlack/ezcp/publishable/assets'.$path);
+        $path = public_path('vendor/ezcp/assets'.$path);
 
         if (File::exists($path)) {
             $mime = '';

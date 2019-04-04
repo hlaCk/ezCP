@@ -254,6 +254,9 @@ class ezCPServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/ezcp.php" => config_path('ezcp.php'),
             ],
+            'public' => [
+                "{$publishablePath}/assets" =>  public_path('vendor/ezcp/assets'),
+            ],
 
         ];
 

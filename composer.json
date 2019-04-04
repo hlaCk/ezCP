@@ -64,8 +64,7 @@
                 "hlaCk\\ezCP\\HooksServiceProvider"
             ],
             "aliases": {
-                "ezCP": "hlaCk\\ezCP\\Facades\\ezCP",
-                "Html": "Collective\\Html\\HtmlFacade"
+                "ezCP": "hlaCk\\ezCP\\Facades\\ezCP"
             }
         }
     }
