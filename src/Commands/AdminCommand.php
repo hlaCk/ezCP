@@ -200,6 +200,12 @@ class AdminCommand extends Command
 
                 return;
             }
+            // Passwords don't match
+            if ( $model::where('email', $email)->get()->count() > 0 ) {
+                $this->error("{$email} already exist !");
+
+                return;
+            }
 
             $this->info('Creating admin account');
 
@@ -214,11 +220,14 @@ class AdminCommand extends Command
             if( $username && !$admin_data[ 'username' ] )
                 $admin_data[ 'username' ] = $username;
 
-            return $model::create([
-                'name'     => $name,
-                'email'    => $email,
-                'password' => Hash::make($password),
-            ]);
+            if( $password && !$admin_data[ 'password' ] )
+                $admin_data[ 'password' ] = $password;
+
+            $admin_data[ 'password' ] = Hash::make($password);
+
+            return $model::create(
+                $admin_data
+            );
         }
 
         return $model::where('email', $email)->firstOrFail();
