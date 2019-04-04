@@ -39,8 +39,8 @@
     "autoload": {
         "psr-4": {
             "hlaCk\\ezCP\\": "src/",
-            "hlaCk\\ezCP\\": "packages/hlack/ezcp/src/",
-            "hlaCk\\overA\\": "packages/hlack/overA/src/"
+            "hlaCk\\ezCP\\": "src/",
+            "hlaCk\\overA\\": "src/"
         },
         "files": [
             "src/Helpers/helpers.php",
@@ -53,8 +53,8 @@
     "autoload-dev": {
         "psr-4": {
             "hlaCk\\ezCP\\Tests\\": "tests/",
-            "hlaCk\\ezCP\\": "packages/hlack/ezcp/src/",
-            "hlaCk\\overA\\": "packages/hlack/overA/src/"
+            "hlaCk\\ezCP\\": "src/",
+            "hlaCk\\overA\\": "src/"
       }
     },
     "minimum-stability": "stable",
